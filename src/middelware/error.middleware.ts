@@ -1,11 +1,10 @@
 import { NextFunction,Request,Response } from "express"
+import { IError } from "../common/interface/error.interface"
 
 
 
 
-interface IError extends Error {
-    status : number
-}
+
 export const globalErrorHandling = (error:IError, req:Request, res:Response, next:NextFunction) => {
 
     return res.status(error.status ?? 500).json({

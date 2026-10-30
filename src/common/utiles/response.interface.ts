@@ -2,7 +2,7 @@ import { type Response } from "express";
 
 
 export interface IResponse<T = any, Z = any> {
-  res: Response;
+  res?: Response;
   message?: string;
   data?: T;
   extra?: Z;
