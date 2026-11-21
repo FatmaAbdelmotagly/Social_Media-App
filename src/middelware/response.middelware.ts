@@ -23,7 +23,8 @@ export const responseFormatter = (handler: Function) => {
       message,
       status,
       data,
-      extra
+      extra,
+      
     });
   };
 };

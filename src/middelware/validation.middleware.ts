@@ -3,6 +3,7 @@ import { BadRequstException } from "../common/exception/domain.exception";
 import { LangEnum } from "../common/enum/securityEnum.js";
 import { NextFunction , Request ,Response } from "express";
 import { ZodType } from "zod";
+import { log } from "node:console";
 
 
 type validationSchemaType = (lang : LangEnum)=>ZodType
@@ -13,7 +14,7 @@ export const validation = (schema :validationSchemaType)=>{
 
         const lang = Number( req.headers['accept-language'] ?? LangEnum.EN) ;
         console.log({lang})
-        
+          
 const validationResult =schema(lang).safeParse({
     body : req.body,
     headers : req.headers,
@@ -21,10 +22,11 @@ const validationResult =schema(lang).safeParse({
 
 })
       if(!validationResult.success){
-
     throw new BadRequstException("validation error", validationResult.error.issues);
  
     }
+  
+    
     req.validate = validationResult.data
     next()
     }

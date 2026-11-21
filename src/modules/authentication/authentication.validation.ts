@@ -10,8 +10,11 @@ const loginSchema = (lang:LangEnum) => {
 
 export const login = (lang:LangEnum) => {
   return z.object({
-    body: loginSchema(lang),
-  });
+    body: loginSchema(lang)
+      .safeExtend({
+          password: z.string(),
+        email : generalValidationFields.email(lang),
+  })});
 };
 
 export const signup = (lang:LangEnum) => {
@@ -22,7 +25,8 @@ export const signup = (lang:LangEnum) => {
         confirmPassword: generalValidationFields.confirmPassword,
         phone: generalValidationFields.phone,
         gender: generalValidationFields.gender,
-        email : generalValidationFields.email(lang)
+        email : generalValidationFields.email(lang),
+        age: generalValidationFields.age
       })
       .superRefine((data, ctx) => {
         generalValidationFields.matchFields({
@@ -49,9 +53,6 @@ export const confirmEmail = (lang:LangEnum) => {
       email: generalValidationFields.email(lang),
       otp: generalValidationFields.otp
     }),
-    query: z.object({}),
-    headers: z.object({}),
-    params: z.object({})
   });
 };
 export const resetPassword = (lang:LangEnum) => {
@@ -76,8 +77,6 @@ export const resendconfirmEmail = (lang:LangEnum) => {
     body: z.strictObject({
       email: generalValidationFields.email(lang)
     }),
-    query: z.object({}),
-    headers: z.object({}),
-    params: z.object({})
+    
   });
 };

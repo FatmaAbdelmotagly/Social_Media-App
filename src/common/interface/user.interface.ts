@@ -1,0 +1,26 @@
+import strict from "node:assert/strict";
+import { number } from "zod";
+import { GenderEnum, ProviderEnum, RoleEnum } from "../enum";
+
+
+export interface IUser 
+  {
+    firstname:string;
+    lastname:string;
+    username?:string;
+    email:string;
+    password:string;
+    phone?:string;
+    image?: string;
+    DOB?:Date,
+    cover?: [string];
+    confirmEmail?: Date;
+    changeCredintialTime?: Date;
+    gender?: GenderEnum;
+    role: RoleEnum;
+    provider:ProviderEnum;
+    confirmPassword: string,
+    craetedAt?:Date;
+    updatedAt?:Date;
+    age?:number
+  }

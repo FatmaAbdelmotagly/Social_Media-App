@@ -24,6 +24,7 @@ const matchFields = ({ original, copy, data, ctx, lang }:{original :string , cop
     password : z.string().regex(/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\s)(?=.*[!@#$%^_&*()]).{8,16}/),
     username :(lang:LangEnum)=>{ return z.string().min(2,{ message : (lang) == LangEnum.AR  ? "يجب ان يحتوي الاسم علي الاقل حرفين " : "minimum length is 2 chars "})} ,
     phone : z.e164(),
+    age: z.number().optional(),
     gender : z.enum(GenderEnum),
     otp : z.string().regex(/^\d{6}$/ , {error:"invalid code"}),
     confirmPassword : z.string().regex(/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\s)(?=.*[!@#$%^_&*()]).{8,16}/) ,
