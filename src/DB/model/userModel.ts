@@ -43,7 +43,15 @@ const userSchema = new mongoose.Schema<IUser>(
     },
     confirmPassword: String,
     status : {type : Number , enum : AccountStatusEnum , default: AccountStatusEnum.ACTIVE},
-    changeStatusAt: Date
+    changeStatusAt: Date ,
+    followingList :{
+      type : [mongoose.Types.ObjectId],
+      default : []
+    },
+    followers : {
+      type : [mongoose.Types.ObjectId],
+      default : []
+    }
   },
   {
     timestamps: true,

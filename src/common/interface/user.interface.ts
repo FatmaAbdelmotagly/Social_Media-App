@@ -1,6 +1,7 @@
 import strict from "node:assert/strict";
 import { number } from "zod";
 import { AccountStatusEnum, GenderEnum, ProviderEnum, RoleEnum } from "../enum";
+import { userIdType } from "../security/token.securtiy";
 
 
 export interface IUser 
@@ -24,5 +25,7 @@ export interface IUser
     confirmPassword: string,
     craetedAt?:Date;
     updatedAt?:Date;
-    age?:number
+    age?:number;
+    followingList : userIdType[];
+    followers : userIdType []
   }

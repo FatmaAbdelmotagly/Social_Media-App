@@ -16,6 +16,7 @@ const validationResult =schema(lang).safeParse({
     body : req.body,
     headers : req.headers,
     params : req.params,
+    query : req.query
 
 })
       if(!validationResult.success){

@@ -4,9 +4,22 @@ import { responseFormatter } from "../../middelware";
 import UserService from "./userService";
 import { RoleEnum, TokenTypeEnum } from "../../common/enum";
 import { getIssuer } from "../../common/utiles/Issuer";
+import { validation } from "../../middelware";
+import * as validators from './user.validation'
+import { toObjectId } from "../../common/utiles/email/ObjectId";
 const router = Router();
 
 
+router.get("/search", authentication(),validation(validators.searchUsers),responseFormatter( async (req:Request, res:Response, next:NextFunction) => {
+  const data = await UserService.searchUsers(req.user , req.query.keyword as string );
+  return{ res, status: 200, data }
+}))
+
+router.post("/:targetId/follow",authentication(), responseFormatter(async (req:Request , res :Response , next : NextFunction)=>{
+  const data = await UserService.follow(req.user , toObjectId(req.params.targetId as string))
+  return {status :201 , data }
+
+}))
 
 router.get("/", authentication(),responseFormatter( async (req:Request, res:Response, next:NextFunction) => {
   const data = await UserService.profile(req.user);

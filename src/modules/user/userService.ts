@@ -7,6 +7,7 @@ import { ACCESS_TOKEN_EXPIRES_IN } from "../../config";
 import { LogoutEnum } from "../../common/enum";
 
 
+
 export class userService {
   private readonly cacheService : CacheService
   private readonly UserRepo : userRepo
@@ -14,6 +15,50 @@ export class userService {
     this.cacheService = new CacheService()
     this.UserRepo = new userRepo()
   }
+
+
+async searchUsers(user: HUser,keyword: string,page: number = 1,limit: number = 10) {
+  const users = await this.UserRepo.paginate({
+    filter: {
+      $or: [
+        { firstname: { $regex: keyword, $options: "i" } },
+        { lastname: { $regex: keyword, $options: "i" } }
+      ],
+      _id: { $ne: user._id }},
+    projection: {
+      firstname: 1,
+      lastname: 1
+    },
+    page,
+    limit
+  });
+  return {...users,docs: users.docs.map(({ _id, username }) => ({_id,username}))};
+}
+
+async follow (user : HUser , targetUserId : userIdType) : Promise<string>{
+  const targetAccount = await this.UserRepo.findById({id : targetUserId})
+  if(!targetAccount){
+    throw new NotFoundException("user id not found ")
+  }
+  if(user._id.toString() == targetUserId.toString()){
+    throw new ConflictException("you cannot follow yourself ")
+  }
+  const follows = user.followingList.some(ele => ele.toString() == targetUserId.toString());
+  if(!follows) {
+    user.followingList.push(targetUserId)
+    targetAccount.followers.push(user._id)
+    await user.save()
+    await targetAccount.save();
+    return `you start following ${targetAccount.username} `
+  }
+  else {
+    user.followingList = user.followingList.filter(ele => ele.toString() != targetUserId.toString())
+    targetAccount.followers=targetAccount.followers.filter(ele=>ele.toString() != user._id.toString())
+    await user.save() 
+    await targetAccount.save();
+    return `you stoped following ${targetAccount.username} `
+  }
+}
 
  UserprofileKey ({user}: {user:HUser })  {
   return `User::${user._id}::CacheProfile`;
@@ -33,13 +78,12 @@ async profile (account :  HUser):Promise<HUser>{
 
 async publicProfile  (userId : userIdType) :Promise<{ user: { _id:userIdType, username:string, image: string } }>{
   const user = await this.UserRepo.findById({
-    id: userId,
-    options: { select: "username image", lean: true },
+    id: userId
   });
   if (!user) {
     throw new NotFoundException("user not found");
   }
-  return { user: { _id: user._id, username: user.username as string, image: user.image as string } };
+  return { user: { _id: user._id, username: user.username as string , image: user.image as string } };
 };
 
 
