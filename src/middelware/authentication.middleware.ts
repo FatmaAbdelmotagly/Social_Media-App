@@ -32,8 +32,8 @@ export const authentication = ({tokenType = TokenTypeEnum.ACCESS}: { tokenType?:
   };
 };
 
-export const authorization = (accessRole:RoleEnum) => {
-  return async (req :Request, res :Response, next:NextFunction) => {
+export const authorization = (accessRole:RoleEnum) : RequestHandler=> {
+  return async (req , res , next) => {
     if (req.user.role < accessRole) {
       throw new ForbiddenException("forbidden user");
     }
