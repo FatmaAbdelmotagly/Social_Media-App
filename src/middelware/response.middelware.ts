@@ -14,7 +14,6 @@ export const responseFormatter = (handler: Function) => {
       data = undefined,
       extra = undefined
     }: IResponse = await handler(req, res, next)||{};
-    console.log(res.headersSent);
 
     if(res.headersSent)return;
     

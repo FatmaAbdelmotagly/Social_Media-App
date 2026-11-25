@@ -21,6 +21,7 @@ export const REFREASH_ADMIN_TOKEN_SEGNITURE = process.env.REFREASH_ADMIN_TOKEN_S
 export const REFREASH_TOKEN_EXPIRES_IN = parseInt(process.env.REFREASH_TOKEN_EXPIRES_IN ?? "86400285");
 export const REDIS_URI:string = process.env.REDIS_URI as string;
 export const APP_EMAIL = process.env.APP_EMAIL;
+export const ORIGINS = process.env.ORIGINS as string;
 export const APP_PASSWORD = process.env.APP_PASSWORD;
 export const APPLICATION_NAME = process.env.APPLICATION_NAME;
 export const WEB_CLIENT_IDS = (process.env.WEB_CLIENT_IDS || "").split(",");

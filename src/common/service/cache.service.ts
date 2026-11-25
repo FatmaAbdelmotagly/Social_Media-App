@@ -9,12 +9,10 @@ export class CacheService {
         this.client = createClient({url : REDIS_URI})
            this.connect()
     }
-
     async connect (){
         try {
             await this.client.connect()
-            console.log("redis connected 😘");
-            
+            console.log("redis connected 😘");      
             
         } catch (error) {
             console.log("fail to connect on redis");
@@ -49,7 +47,7 @@ export class CacheService {
       }
       return this.set({ key, value, ttl });
     };
-    async del ({ key }:{key:string}){
+    async del ({ key }:{key:string | string[]}){
       return await this.client.del(key);
     };
     async keys ({ prefix } :{prefix : string}) {

@@ -1,10 +1,12 @@
 import strict from "node:assert/strict";
 import { number } from "zod";
-import { GenderEnum, ProviderEnum, RoleEnum } from "../enum";
+import { AccountStatusEnum, GenderEnum, ProviderEnum, RoleEnum } from "../enum";
 
 
 export interface IUser 
   {
+    status : AccountStatusEnum;
+    changeStatusAt: Date;
     firstname:string;
     lastname:string;
     username?:string;
@@ -12,7 +14,7 @@ export interface IUser
     password:string;
     phone?:string;
     image?: string;
-    DOB?:Date,
+    DOB?:Date;
     cover?: [string];
     confirmEmail?: Date;
     changeCredintialTime?: Date;

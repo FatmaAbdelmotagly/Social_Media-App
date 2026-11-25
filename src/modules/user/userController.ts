@@ -3,6 +3,7 @@ import { authentication } from "../../middelware/authentication.middleware";
 import { responseFormatter } from "../../middelware";
 import UserService from "./userService";
 import { TokenTypeEnum } from "../../common/enum";
+import { getIssuer } from "../../common/utiles/Issuer";
 const router = Router();
 
 router.post(
@@ -13,7 +14,7 @@ router.post(
     const data = await UserService.rotate(
       req.payLoad,
       req.user,
-      ` ${req.protocol}://${req.host}`,
+      getIssuer(req),
     );
 return {status : 201 , data}
   },
